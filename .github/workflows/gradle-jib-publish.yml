@@ -16,6 +16,11 @@ on:
         description: "Name of the docker image to push"
         required: true
         type: string
+      docker-tag:
+        description: "Tag of the docker image to push"
+        required: false
+        type: string
+        default: "latest"
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -49,5 +54,5 @@ jobs:
             jib
             -Djib.to.auth.username=${{ secrets.docker-username }}
             -Djib.to.auth.password=${{ secrets.docker-token }}
-            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:latest
+            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ inputs.docker-tag }}
             -Djib.console=plain

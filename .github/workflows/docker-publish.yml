@@ -7,6 +7,11 @@ on:
         description: "Name of the docker image to push"
         required: true
         type: string
+      docker-tag:
+        description: "Tag of the docker image to push"
+        required: false
+        type: string
+        default: "latest"
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -49,7 +54,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:latest
+            ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ inputs.docker-tag }}
           platforms: linux/amd64
           build-args: BUILDX_QEMU_ENV=true
           cache-from: type=gha
