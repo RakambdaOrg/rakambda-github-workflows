@@ -34,7 +34,7 @@ on:
 
 jobs:
   publish:
-    name: Gradle - Publish latest Docker
+    name: Gradle - Publish Docker
     runs-on: ubuntu-latest
     concurrency: docker-${{ vars.docker-tag }}
     steps:
