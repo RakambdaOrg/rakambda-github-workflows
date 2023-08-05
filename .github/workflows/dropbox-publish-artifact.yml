@@ -1,0 +1,44 @@
+name: Dropbox publish
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: "Name of artifact to get"
+        required: true
+        type: string
+      source:
+        description: "Source file to transfer"
+        required: true
+        type: string
+      target:
+        description: "Target to upload to"
+        required: true
+        type: string
+      mode:
+        description: "Upload mode"
+        required: false
+        type: string
+        default: "overwrite"
+    secrets:
+      dropbox-token:
+        description: "Dropbox access token"
+        required: true
+
+jobs:
+  publish:
+    name: Dropbox - Publish
+    runs-on: ubuntu-latest
+    concurrency: dropbox
+    steps:
+      - uses: actions/download-artifact@v3
+        name: Download artifact
+        with:
+          name: ${{ inputs.artifact-name }}
+      - name: Deploy on Dropbox
+        uses: deka0106/upload-to-dropbox@v2.0.1
+        with:
+          dropbox_access_token: ${{ secrets.dropbox-token }}
+          src: ${{ inputs.source }}
+          dest: ${{ inputs.target }}
+          mode: ${{ inputs.mode }}
