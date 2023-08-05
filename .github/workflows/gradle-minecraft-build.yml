@@ -38,10 +38,12 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Restore keystore
-        if: ${{ secrets.keystore }} != null
         run: |
-          echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+          if [ ! -z "${{ secrets.keystore }}" ]; then
+          do
+            echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
+            gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+          done
 
       - name: Build
         uses: gradle/gradle-build-action@v2.7.0
