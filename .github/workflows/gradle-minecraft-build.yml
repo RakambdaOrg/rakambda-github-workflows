@@ -40,10 +40,9 @@ jobs:
       - name: Restore keystore
         run: |
           if [ ! -z "${{ secrets.keystore }}" ]; then
-          do
             echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
             gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
-          done
+          fi
 
       - name: Build
         uses: gradle/gradle-build-action@v2.7.0
