@@ -42,7 +42,7 @@ jobs:
           distribution: ${{ inputs.java-distribution }}
           java-version: ${{ inputs.java-version }}
 
-      - name: Build
+      - name: Jib
         uses: gradle/gradle-build-action@v2.6.1
         with:
           cache-disabled: true
