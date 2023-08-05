@@ -31,7 +31,7 @@ jobs:
   publish:
     name: Docker - Publish latest
     runs-on: ubuntu-latest
-    concurrency: docker
+    concurrency: docker-${{ vars.docker-tag }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
     steps:

@@ -36,7 +36,7 @@ jobs:
   publish:
     name: Gradle - Publish latest Docker
     runs-on: ubuntu-latest
-    concurrency: docker
+    concurrency: docker-${{ vars.docker-tag }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
