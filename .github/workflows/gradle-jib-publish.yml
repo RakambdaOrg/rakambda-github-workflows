@@ -17,10 +17,10 @@ on:
         required: true
         type: string
       docker-tag:
-        description: "Tag of the docker image to push"
+        description: "Tag of the docker image to push, defaults to current branch name"
         required: false
         type: string
-        default: "latest"
+        default: ""
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -46,6 +46,14 @@ jobs:
           distribution: ${{ inputs.java-distribution }}
           java-version: ${{ inputs.java-version }}
 
+      - name: Calculate image tag
+        id: image-tag
+        run: |
+          if [ -z "${{ vars.docker-tag }}" ] then
+            echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ vars.docker-tag }}" >> "$GITHUB_OUTPUT"
+          fi
       - name: Jib
         uses: gradle/gradle-build-action@v2.7.0
         with:
@@ -54,5 +62,5 @@ jobs:
             jib
             -Djib.to.auth.username=${{ secrets.docker-username }}
             -Djib.to.auth.password=${{ secrets.docker-token }}
-            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ inputs.docker-tag }}
+            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
             -Djib.console=plain

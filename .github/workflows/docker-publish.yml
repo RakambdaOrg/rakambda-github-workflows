@@ -8,10 +8,10 @@ on:
         required: true
         type: string
       docker-tag:
-        description: "Tag of the docker image to push"
+        description: "Tag of the docker image to push, defaults to current branch name"
         required: false
         type: string
-        default: "latest"
+        default: ""
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -47,6 +47,14 @@ jobs:
           registry: ${{ secrets.docker-repo }}
           username: ${{ secrets.docker-username }}
           password: ${{ secrets.docker-token }}
+      - name: Calculate image tag
+        id: image-tag
+        run: |
+          if [ -z "${{ vars.docker-tag }}" ] then
+            echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ vars.docker-tag }}" >> "$GITHUB_OUTPUT"
+          fi
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4.1.1
@@ -54,7 +62,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ inputs.docker-tag }}
+            ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
           platforms: linux/amd64
           build-args: BUILDX_QEMU_ENV=true
           cache-from: type=gha
