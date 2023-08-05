@@ -26,7 +26,6 @@ jobs:
   publish:
     name: Docker - Publish latest
     runs-on: ubuntu-latest
-    if: github.ref == ${{ github.event.repository.default_branch }}
     concurrency: docker
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
