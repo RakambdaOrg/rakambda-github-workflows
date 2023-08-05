@@ -1,0 +1,64 @@
+name: Gradle Minecraft build
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: "JDK version to use"
+        required: true
+        type: string
+      java-distribution:
+        description: "JDK distribution to use"
+        required: false
+        type: string
+        default: "temurin"
+    secrets:
+      keystore:
+        required: false
+      keystore-passphrase:
+        required: false
+      key-alias:
+        required: true
+      key-store-pass:
+        required: true
+      key-pass:
+        required: true
+
+jobs:
+  build:
+    name: Gradle - Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java-version }}
+
+      - name: Restore keystore
+        if: secrets.keystore != null
+        run: |
+          echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
+          gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2.7.0
+        with:
+          arguments: |
+            build
+            -PforgeKeyStore=keystoreForgeMods.jks
+            -PforgeKeyStoreAlias=${{ secrets.key-alias }}
+            -PforgeKeyStorePass=${{ secrets.key-store-pass }}
+            -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
+            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+
+      - name: Upload mod file
+        uses: actions/upload-artifact@v3
+        with:
+          name: mod-file
+          path: |
+            build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14
