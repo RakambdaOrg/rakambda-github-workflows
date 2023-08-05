@@ -49,10 +49,10 @@ jobs:
       - name: Calculate image tag
         id: image-tag
         run: |
-          if [ -z "${{ vars.docker-tag }}" ]; then
+          if [ -z "${{ inputs.docker-tag }}" ]; then
             echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=${{ vars.docker-tag }}" >> "$GITHUB_OUTPUT"
+            echo "tag=${{ inputs.docker-tag }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Jib
         uses: gradle/gradle-build-action@v2.7.0
