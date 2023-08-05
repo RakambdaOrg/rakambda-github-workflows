@@ -32,3 +32,12 @@ jobs:
           cache-disabled: true
           arguments: |
             build
+
+      - name: Upload artifacts
+        id: gradle-build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Gradle-Libs
+          path: build/libs/*.jar
+          retention-days: 14
+          if-no-files-found: warn
