@@ -49,7 +49,7 @@ jobs:
       - name: Calculate image tag
         id: image-tag
         run: |
-          if [ -z "${{ vars.docker-tag }}" ] then
+          if [ -z "${{ vars.docker-tag }}" ]; then
             echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
           else
             echo "tag=${{ vars.docker-tag }}" >> "$GITHUB_OUTPUT"
