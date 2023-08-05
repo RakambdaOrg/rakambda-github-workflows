@@ -1,0 +1,20 @@
+name: Python build
+
+on:
+  workflow_call:
+    inputs:
+      source-folder:
+        description: "Folder where sources are located"
+        required: true
+        type: string
+
+jobs:
+  check:
+    name: Python - Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - run: cd "${{ vars.source-folder }}"
+      - name: Python Syntax Checker
+        uses: cclauss/Find-Python-syntax-errors-action@v0.2.0
