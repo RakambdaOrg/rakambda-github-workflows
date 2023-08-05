@@ -6,7 +6,7 @@ on:
       java-version:
         description: "JDK version to use"
         required: true
-        type: number
+        type: string
       java-distribution:
         description: "JDK distribution to use"
         required: false
