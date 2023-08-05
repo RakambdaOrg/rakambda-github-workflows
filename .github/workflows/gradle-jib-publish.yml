@@ -1,0 +1,55 @@
+name: Gradle Docker publish
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: "JDK version to use"
+        required: true
+        type: number
+      java-distribution:
+        description: "JDK distribution to use"
+        required: false
+        type: string
+        default: "temurin"
+      docker-image:
+        description: "Name of the docker image to push"
+        required: true
+        type: string
+    secrets:
+      docker-repo:
+        description: "Docker registry to push to"
+        required: true
+      docker-username:
+        description: "Docker username"
+        required: true
+      docker-token:
+        description: "Docker token"
+        required: true
+
+jobs:
+  publish:
+    name: Gradle - Publish latest Docker
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == ${{ github.event.repository.default_branch }}
+    concurrency: docker
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ inputs.java-version }}
+          java-version: ${{ inputs.java-distribution }}
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2.6.1
+        with:
+          cache-disabled: true
+          arguments: |
+            jib
+            -Djib.to.auth.username=${{ secrets.docker-username }}
+            -Djib.to.auth.password=${{ secrets.docker-token }}
+            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:latest
+            -Djib.console=plain
