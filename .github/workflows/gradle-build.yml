@@ -12,6 +12,11 @@ on:
         required: false
         type: string
         default: "temurin"
+      artifact-name:
+        description: "Name of artifact to get"
+        required: true
+        type: string
+        default: "Gradle-Libs"
 
 jobs:
   build:
@@ -37,7 +42,7 @@ jobs:
         id: gradle-build
         uses: actions/upload-artifact@v3
         with:
-          name: Gradle-Libs
+          name: ${{ inputs.artifact-name }}
           path: build/libs/*.jar
           retention-days: 14
           if-no-files-found: warn
