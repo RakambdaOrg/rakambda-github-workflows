@@ -45,7 +45,7 @@ jobs:
           fi
 
       - name: Build
-        uses: gradle/gradle-build-action@v2.7.0
+        uses: gradle/gradle-build-action@v2.7.1
         with:
           arguments: |
             build
