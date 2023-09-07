@@ -43,10 +43,11 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Restore keystore
-        if: secrets.keystore != null
         run: |
-          echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
-          gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+          if [ ! -z "${{ secrets.keystore }}" ]; then
+            echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
+            gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
+          fi
 
       - name: Get release
         id: get_release
@@ -72,6 +73,6 @@ jobs:
             -PcurseforgeApiKey=${{ secrets.curseforge-token }}
             -PmodrinthToken=${{ secrets.modrinth-token }}
             -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog at ${{ steps.get_release.outputs.html_url }}](${{ steps.get_release.outputs.html_url }})
+            -Pchangelog="[Changelog on GitHub](${{ steps.get_release.outputs.html_url }})
             
             ${{ steps.get_release.outputs.body }}"
