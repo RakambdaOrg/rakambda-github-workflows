@@ -18,6 +18,9 @@ on:
         type: string
         default: "Gradle-Libs"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Gradle - Build
@@ -34,7 +37,7 @@ jobs:
       - name: Build
         uses: gradle/gradle-build-action@v2.8.0
         with:
-          cache-disabled: true
+          dependency-graph: generate-and-submit
           arguments: |
             build
 
@@ -44,5 +47,5 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: build/libs/*.jar
-          retention-days: 14
+          retention-days: 7
           if-no-files-found: warn
