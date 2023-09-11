@@ -24,6 +24,9 @@ on:
       key-pass:
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Gradle - Build
@@ -47,6 +50,7 @@ jobs:
       - name: Build
         uses: gradle/gradle-build-action@v2.8.0
         with:
+          dependency-graph: generate-and-submit
           arguments: |
             build
             -PforgeKeyStore=keystoreForgeMods.jks
@@ -62,4 +66,4 @@ jobs:
           path: |
             build/libs/*.jar
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
