@@ -22,4 +22,4 @@ jobs:
           token: "${{ secrets.sync-token }}}"
           strategy: squash
           intervalSeconds: 60
-          timeoutSeconds: 3600
+          timeoutSeconds: 600
