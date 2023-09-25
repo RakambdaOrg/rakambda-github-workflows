@@ -7,11 +7,16 @@ on:
         description: "Folder where sources are located"
         required: true
         type: string
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
 
 jobs:
   check:
     name: Python - Check
-    runs-on: ubuntu-latest
+    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
