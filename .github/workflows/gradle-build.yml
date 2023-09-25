@@ -17,6 +17,11 @@ on:
         required: false
         type: string
         default: "Gradle-Libs"
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
 
 permissions:
   contents: write
@@ -24,7 +29,7 @@ permissions:
 jobs:
   build:
     name: Gradle - Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runs-on }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
