@@ -20,6 +20,11 @@ on:
         required: false
         type: string
         default: "overwrite"
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
     secrets:
       dropbox-token:
         description: "Dropbox access token"
@@ -28,7 +33,7 @@ on:
 jobs:
   publish:
     name: Dropbox - Publish
-    runs-on: ubuntu-latest
+    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     concurrency: dropbox-${{ inputs.target }}
     steps:
       - uses: actions/download-artifact@v3
