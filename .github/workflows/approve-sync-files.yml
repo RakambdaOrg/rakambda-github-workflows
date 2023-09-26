@@ -25,7 +25,7 @@ jobs:
       - name: Pull Request merge
         uses: KeisukeYamashita/auto-pull-request-merge@v1.0.6
         with:
-          token: "${{ secrets.sync-token }}}"
+          token: "${{ secrets.sync-token }}"
           strategy: squash
           intervalSeconds: 60
           timeoutSeconds: 600
