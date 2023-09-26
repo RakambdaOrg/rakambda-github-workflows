@@ -1,0 +1,29 @@
+name: Sync wiki
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: "Path of the wiki in the sources"
+        required: true
+        type: string
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Wiki - Sync
+    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Push changes to the wiki
+        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        with:
+          path: ${{ inputs.path }}
