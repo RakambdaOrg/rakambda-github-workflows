@@ -36,7 +36,7 @@ jobs:
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     concurrency: dropbox-${{ inputs.target }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.1.0
         name: Download artifact
         with:
           name: ${{ inputs.artifact-name }}
