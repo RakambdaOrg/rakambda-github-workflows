@@ -3,6 +3,10 @@ name: Docker publish
 on:
   workflow_call:
     inputs:
+      build-args:
+        description: "Docker build args"
+        required: false
+        type: string
       docker-image:
         description: "Name of the docker image to push"
         required: true
@@ -69,7 +73,7 @@ jobs:
           tags: |
             ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
           platforms: linux/amd64
-          build-args: BUILDX_QEMU_ENV=true
+          build-args: BUILDX_QEMU_ENV=true ${{ inputs.build-args }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Image digest
