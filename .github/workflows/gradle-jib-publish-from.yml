@@ -27,9 +27,9 @@ on:
         type: string
         default: "ubuntu-latest"
     secrets:
-      docker-from-image:
-        description: "Image to use as base image"
-        required: true
+      jib-extra-params:
+        description: "Extra jib parameters"
+        required: false
       docker-repo:
         description: "Docker registry to push to"
         required: true
@@ -68,8 +68,8 @@ jobs:
           cache-disabled: true
           arguments: |
             jib
-            -Djib.from.image=${{ secrets.docker-from-image }}
             -Djib.to.auth.username=${{ secrets.docker-username }}
             -Djib.to.auth.password=${{ secrets.docker-token }}
             -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
             -Djib.console=plain
+            ${{ secrets.jib-extra-params }}
