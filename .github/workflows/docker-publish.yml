@@ -73,7 +73,9 @@ jobs:
           tags: |
             ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
           platforms: linux/amd64
-          build-args: BUILDX_QEMU_ENV=true ${{ inputs.build-args }}
+          build-args: |
+            BUILDX_QEMU_ENV=true
+            ${{ inputs.build-args }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Image digest
