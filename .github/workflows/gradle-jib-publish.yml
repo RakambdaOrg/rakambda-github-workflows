@@ -62,14 +62,16 @@ jobs:
           else
             echo "tag=${{ inputs.docker-tag }}" >> "$GITHUB_OUTPUT"
           fi
-      - name: Jib
-        uses: gradle/gradle-build-action@v3.0.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.0.0
         with:
           cache-disabled: true
-          arguments: |
-            jib
-            -Djib.to.auth.username=${{ secrets.docker-username }}
-            -Djib.to.auth.password=${{ secrets.docker-token }}
-            -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
-            -Djib.console=plain
-            ${{ secrets.jib-extra-params }}
+      - name: Jib
+        run: |
+          ./gradlew
+          jib
+          -Djib.to.auth.username=${{ secrets.docker-username }}
+          -Djib.to.auth.password=${{ secrets.docker-token }}
+          -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
+          -Djib.console=plain
+          ${{ secrets.jib-extra-params }}
