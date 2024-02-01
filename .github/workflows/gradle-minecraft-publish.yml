@@ -60,23 +60,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.0.0
       - name: Publish
-        uses: gradle/gradle-build-action@v3.0.0
-        with:
-          arguments: |
-            build
-            curseforge
-            -PforgeKeyStore=keystoreForgeMods.jks
-            -PforgeKeyStoreAlias=${{ secrets.key-alias }}
-            -PforgeKeyStorePass=${{ secrets.key-store-pass }}
-            -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
-            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
-            -PcurseforgeApiKey=${{ secrets.curseforge-token }}
-            -PmodrinthToken=${{ secrets.modrinth-token }}
-            -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog on GitHub](${{ steps.get_release.outputs.html_url }})
-            
-            ${{ steps.get_release.outputs.body }}"
+        run: |
+          ./gradlew
+          build
+          curseforge
+          -PforgeKeyStore=keystoreForgeMods.jks
+          -PforgeKeyStoreAlias=${{ secrets.key-alias }}
+          -PforgeKeyStorePass=${{ secrets.key-store-pass }}
+          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
+          -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+          -PcurseforgeApiKey=${{ secrets.curseforge-token }}
+          -PmodrinthToken=${{ secrets.modrinth-token }}
+          -Pversion=${{ steps.get_release.outputs.name }}
+          -Pchangelog="[Changelog on GitHub](${{ steps.get_release.outputs.html_url }})
+          
+          ${{ steps.get_release.outputs.body }}"
 
   publish-modrinth:
     name: Gradle - Publish - Modrinth
@@ -104,21 +105,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.0.0
       - name: Publish
-        uses: gradle/gradle-build-action@v3.0.0
-        with:
-          arguments: |
-            build
-            modrinth
-            modrinthSyncBody
-            -PforgeKeyStore=keystoreForgeMods.jks
-            -PforgeKeyStoreAlias=${{ secrets.key-alias }}
-            -PforgeKeyStorePass=${{ secrets.key-store-pass }}
-            -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
-            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
-            -PcurseforgeApiKey=${{ secrets.curseforge-token }}
-            -PmodrinthToken=${{ secrets.modrinth-token }}
-            -Pversion=${{ steps.get_release.outputs.name }}
-            -Pchangelog="[Changelog on GitHub](${{ steps.get_release.outputs.html_url }})
-            
-            ${{ steps.get_release.outputs.body }}"
+        run: |
+          ./gradlew
+          build
+          modrinth
+          modrinthSyncBody
+          -PforgeKeyStore=keystoreForgeMods.jks
+          -PforgeKeyStoreAlias=${{ secrets.key-alias }}
+          -PforgeKeyStorePass=${{ secrets.key-store-pass }}
+          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
+          -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+          -PcurseforgeApiKey=${{ secrets.curseforge-token }}
+          -PmodrinthToken=${{ secrets.modrinth-token }}
+          -Pversion=${{ steps.get_release.outputs.name }}
+          -Pchangelog="[Changelog on GitHub](${{ steps.get_release.outputs.html_url }})
+          
+          ${{ steps.get_release.outputs.body }}"
