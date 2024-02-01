@@ -52,17 +52,17 @@ jobs:
             gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
           fi
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.0.0
       - name: Build
-        uses: gradle/gradle-build-action@v3.0.0
-        with:
-          dependency-graph: generate-and-submit
-          arguments: |
-            build
-            -PforgeKeyStore=keystoreForgeMods.jks
-            -PforgeKeyStoreAlias=${{ secrets.key-alias }}
-            -PforgeKeyStorePass=${{ secrets.key-store-pass }}
-            -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
-            -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+        run: |
+          ./gradlew
+          build
+          -PforgeKeyStore=keystoreForgeMods.jks
+          -PforgeKeyStoreAlias=${{ secrets.key-alias }}
+          -PforgeKeyStorePass=${{ secrets.key-store-pass }}
+          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
+          -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
       - name: Upload mod file
         uses: actions/upload-artifact@v4.3.0
