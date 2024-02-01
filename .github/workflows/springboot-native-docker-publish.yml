@@ -63,13 +63,14 @@ jobs:
           else
             echo "tag=${{ inputs.docker-tag }}" >> "$GITHUB_OUTPUT"
           fi
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.0.0
       - name: Boot build native
-        uses: gradle/gradle-build-action@v3.0.0
-        with:
-          cache-disabled: true
-          arguments: |
-            bootBuildImage
-            --imageName=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
+        run: |
+          ./gradlew
+          bootBuildImage
+          --imageName=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
       - name: Push on registry
         run: |
           docker push ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
