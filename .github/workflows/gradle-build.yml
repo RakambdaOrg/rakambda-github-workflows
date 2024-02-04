@@ -44,7 +44,6 @@ jobs:
         with:
           dependency-graph: generate-and-submit
           arguments: |
-            ./gradlew
             build
 
       - name: Upload artifacts
