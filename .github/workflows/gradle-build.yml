@@ -40,13 +40,12 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3.0.0
+        uses: gradle/gradle-build-action@v2.12.0
         with:
           dependency-graph: generate-and-submit
-      - name: Build
-        run: |
-          ./gradlew
-          build
+          arguments: |
+            ./gradlew
+            build
 
       - name: Upload artifacts
         id: gradle-build
