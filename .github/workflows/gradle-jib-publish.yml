@@ -43,7 +43,7 @@ on:
 jobs:
   publish:
     name: Gradle - Publish Docker
-    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
     concurrency: docker-${{ inputs.docker-tag }}
     steps:
       - name: Checkout source
@@ -68,10 +68,10 @@ jobs:
           cache-disabled: true
       - name: Jib
         run: |
-          ./gradlew
-          jib
-          -Djib.to.auth.username=${{ secrets.docker-username }}
-          -Djib.to.auth.password=${{ secrets.docker-token }}
-          -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
+          ./gradlew \
+          jib \
+          ${{ secrets.jib-extra-params }} \
+          -Djib.to.auth.username=${{ secrets.docker-username }} \
+          -Djib.to.auth.password=${{ secrets.docker-token }} \
+          -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }} \
           -Djib.console=plain
-          ${{ secrets.jib-extra-params }}

@@ -56,12 +56,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v3.0.0
       - name: Build
         run: |
-          ./gradlew
-          build
-          -PforgeKeyStore=keystoreForgeMods.jks
-          -PforgeKeyStoreAlias=${{ secrets.key-alias }}
-          -PforgeKeyStorePass=${{ secrets.key-store-pass }}
-          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }}
+          ./gradlew \
+          build \
+          -PforgeKeyStore=keystoreForgeMods.jks \
+          -PforgeKeyStoreAlias=${{ secrets.key-alias }} \
+          -PforgeKeyStorePass=${{ secrets.key-store-pass }} \
+          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }} \
           -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
       - name: Upload mod file

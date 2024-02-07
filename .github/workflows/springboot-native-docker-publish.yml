@@ -70,8 +70,8 @@ jobs:
           cache-disabled: true
       - name: Boot build native
         run: |
-          ./gradlew
-          bootBuildImage
+          ./gradlew \
+          bootBuildImage \
           --imageName=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }}
       - name: Push on registry
         run: |
