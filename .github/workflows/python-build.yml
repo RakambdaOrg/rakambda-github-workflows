@@ -19,7 +19,7 @@ jobs:
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
       - run: cd "${{ inputs.source-folder }}"
       - name: Python Syntax Checker
         uses: cclauss/Find-Python-syntax-errors-action@v0.2.0

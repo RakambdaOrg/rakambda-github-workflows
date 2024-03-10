@@ -22,8 +22,8 @@ jobs:
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
       - name: Push changes to the wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
         with:
           path: ${{ inputs.path }}
