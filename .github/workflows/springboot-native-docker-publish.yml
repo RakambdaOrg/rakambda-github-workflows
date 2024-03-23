@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      timeout:
+        description: "Timeout for the build"
+        required: false
+        type: number
+        default: 60
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -37,6 +42,7 @@ jobs:
     name: SpringBoot Native Gradle - Publish Docker
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     concurrency: docker-${{ inputs.docker-tag }}
+    timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.1.1
