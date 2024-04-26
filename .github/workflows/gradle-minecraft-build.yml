@@ -38,7 +38,7 @@ jobs:
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.4
       - name: Set up JDK
         uses: actions/setup-java@v4.2.1
         with:
