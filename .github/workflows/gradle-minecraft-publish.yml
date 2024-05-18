@@ -40,7 +40,7 @@ jobs:
     concurrency: publish-curseforge
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v4.1.6
       - name: Set up JDK
         uses: actions/setup-java@v4.2.1
         with:
@@ -85,7 +85,7 @@ jobs:
     concurrency: publish-modrinth
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.5
+        uses: actions/checkout@v4.1.6
       - name: Set up JDK
         uses: actions/setup-java@v4.2.1
         with:
