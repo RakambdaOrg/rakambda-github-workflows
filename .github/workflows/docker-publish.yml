@@ -66,7 +66,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5.5.1
         with:
-          images: ${{ inputs.docker-image }}
+          images: ${{ secrets.docker-repo }}/${{ inputs.docker-image }}
           tags: |
             # Default values
             type=schedule
