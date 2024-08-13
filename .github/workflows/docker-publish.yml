@@ -3,6 +3,10 @@ name: Docker publish
 on:
   workflow_call:
     inputs:
+      repository:
+        description: "Repository to checkout"
+        required: false
+        type: string
       build-args:
         description: "Docker build args"
         required: false
@@ -46,6 +50,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.1.7
+        with:
+          repository: '${{ inputs.repository }}'
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.2.0
       - name: Set up Docker Buildx
