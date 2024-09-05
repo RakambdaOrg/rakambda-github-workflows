@@ -113,7 +113,7 @@ jobs:
         if: ${{ inputs.generate-jacoco }}
         run: |
           ./gradlew \
-          :miner:jacocoTestReport
+          jacocoTestReport
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
