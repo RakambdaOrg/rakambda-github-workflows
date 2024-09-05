@@ -126,6 +126,15 @@ jobs:
         if: ${{ inputs.generate-jacoco && inputs.send-codecov }}
         with:
           token: ${{ secrets.codecov-token }}
+          files: build/test-results/test/*.xml
+          flags: unittests
+          name: codecov-github-actions
+      # https://github.com/codecov/test-results-action/issues/72
+      - name: Publish tests on CodeCov
+        uses: codecov/test-results-action@v1.0.0
+        if: ${{ !always() }} #${{ inputs.generate-jacoco && inputs.send-codecov }}
+        with:
+          token: ${{ secrets.codecov-token }}
           files: build/reports/jacoco/test/jacocoTestReport.xml
           flags: unittests
           name: codecov-github-actions
@@ -137,7 +146,7 @@ jobs:
           name: junit-test-results
           path: |
             build/test-results/test/*.xml
-            build/reports/tests/tests
+            build/reports/tests/test
           if-no-files-found: error
           retention-days: 7
       - name: Upload JaCoCo reports
