@@ -1,0 +1,44 @@
+name: Gradle Docker publish
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: "JDK version to use"
+        required: true
+        type: string
+      java-distribution:
+        description: "JDK distribution to use"
+        required: false
+        type: string
+        default: "temurin"
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+jobs:
+  publish:
+    name: Gradle - Publish Reporitory
+    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
+    concurrency: publish
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.1.7
+      - name: Set up JDK
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java-version }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4.0.1
+        with:
+          cache-disabled: true
+      - name: Jib
+        run: |
+          ./gradlew \
+          publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
