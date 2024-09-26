@@ -47,7 +47,7 @@ jobs:
     runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set up JDK
         uses: actions/setup-java@v4.4.0
         with:
@@ -62,7 +62,7 @@ jobs:
     runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set up JDK
         uses: actions/setup-java@v4.4.0
         with:
@@ -93,7 +93,7 @@ jobs:
     runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.0
       - name: Set up JDK
         uses: actions/setup-java@v4.4.0
         with:
