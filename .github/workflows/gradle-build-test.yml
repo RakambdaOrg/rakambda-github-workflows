@@ -122,7 +122,7 @@ jobs:
           report_paths: 'build/test-results/test/*.xml'
 
       - name: Publish coverage on CodeCov
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v4.6.0
         if: ${{ inputs.generate-jacoco && inputs.send-codecov }}
         with:
           token: ${{ secrets.codecov-token }}
