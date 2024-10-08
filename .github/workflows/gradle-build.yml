@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload artifacts
         id: gradle-build
-        uses: actions/upload-artifact@v4.4.0
+        uses: actions/upload-artifact@v4.4.1
         if: "${{ inputs.artifact-name != '' }}"
         with:
           name: ${{ inputs.artifact-name }}
