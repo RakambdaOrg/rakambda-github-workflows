@@ -65,7 +65,7 @@ jobs:
           -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
 
       - name: Upload mod file
-        uses: actions/upload-artifact@v4.4.1
+        uses: actions/upload-artifact@v4.4.2
         with:
           name: mod-file
           path: |
