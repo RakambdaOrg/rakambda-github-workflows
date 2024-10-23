@@ -22,7 +22,7 @@ jobs:
     runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
         with:
