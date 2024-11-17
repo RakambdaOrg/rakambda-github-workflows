@@ -1,0 +1,43 @@
+name: Sync FTP
+
+on:
+  workflow_call:
+    inputs:
+      remote-path:
+        description: "Remote path on the FTP server to sync files to"
+        required: true
+        type: string
+      repository-path:
+        description: "Path in the repository to sync"
+        required: true
+        type: string
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "self-hosted"
+    secrets:
+      ftp-host:
+        required: false
+      ftp-user:
+        required: false
+      ftp-password:
+        required: false
+
+jobs:
+  build:
+    name: FTP - Sync
+    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 20
+      - name: Set up Git-FTP
+        run: |
+          curl https://raw.githubusercontent.com/git-ftp/git-ftp/master/git-ftp > git-ftp &&
+          sudo mv git-ftp /bin &&
+          sudo chmod 755 /bin/git-ftp
+      - name: Deploy on FTP
+        run: |
+          git ftp push -v --remote-root "${{ inputs.remote-path }}" --syncroot "${{ inputs.repository-path }}" --user "${{ secrets.ftp-user }}" --passwd "${{ secrets.ftp-password }}" "${{ secrets.ftp-host }}"
