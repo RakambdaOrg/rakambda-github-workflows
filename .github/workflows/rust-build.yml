@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       target:
-        description: "Node version"
+        description: "Release target name"
         required: false
         type: string
         default: "x86_64-unknown-linux-musl"
