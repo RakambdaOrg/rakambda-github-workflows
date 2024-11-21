@@ -37,7 +37,7 @@ on:
         description: "Runner to use"
         required: false
         type: string
-        default: "self-hosted"
+        default: "ubuntu-latest"
     secrets:
       docker-repo:
         description: "Docker registry to push to"

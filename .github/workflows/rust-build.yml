@@ -27,7 +27,7 @@ on:
         description: "Runner to use"
         required: false
         type: string
-        default: "self-hosted"
+        default: "ubuntu-latest"
 
 permissions:
   contents: write
