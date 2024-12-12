@@ -67,16 +67,8 @@ jobs:
              Remove-Item -Path "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip" 
           }
           Compress-Archive -Path "${{ inputs.project-path }}\bin\${{ inputs.platform }}\${{ inputs.plugin-name }}" -DestinationPath "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip"
-      - name: Upload artifact
-        id: dotnet-build
-        uses: actions/upload-artifact@v4.4.3
-        with:
-          name: "${{ inputs.plugin-name }}-${{ inputs.platform }}"
-          path: "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip"
-          retention-days: 7
-          if-no-files-found: warn
       - name: Add file to release
-        uses: softprops/action-gh-release@v2.2.0
+        uses: softprops/action-gh-release@v2.1.0
         with:
           fail_on_unmatched_files: false
           generate_release_notes: true
