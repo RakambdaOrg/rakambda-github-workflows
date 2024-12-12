@@ -67,9 +67,8 @@ jobs:
              Remove-Item -Path "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip" 
           }
           Compress-Archive -Path "${{ inputs.project-path }}\bin\${{ inputs.platform }}\${{ inputs.plugin-name }}" -DestinationPath "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip"
-            - name: Upload artifacts
-      - id: dotnet-build
-        name: Upload artifact
+      - name: Upload artifact
+        id: dotnet-build
         uses: actions/upload-artifact@v4.4.3
         with:
           name: "${{ inputs.plugin-name }}-${{ inputs.platform }}"
