@@ -55,7 +55,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Update plugin.json
-        run: jq ".Version=""${{ steps.get_release.outputs.name }}""" "${{ inputs.project-path }}\plugin.json" > "${{ inputs.project-path }}\plugin.json"
+        run: |
+           Get-Content "${{ inputs.project-path }}\plugin.json" | jq ".Version=""${{ steps.get_release.outputs.name }}""" > "${{ inputs.project-path }}\plugin.json.new"
+           Move-Item -Force -Path "${{ inputs.project-path }}\plugin.json.new" -Destination "${{ inputs.project-path }}\plugin.json"
       - name: Build
         run: dotnet build "${{ inputs.solution-path }}" --configuration "${{ inputs.release-type }}" /p:Platform=${{ inputs.platform }} /p:EnableWindowsTargeting=true
       - name: Prepare artifact
