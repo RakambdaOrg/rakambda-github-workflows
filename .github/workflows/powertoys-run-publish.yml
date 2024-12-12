@@ -67,6 +67,14 @@ jobs:
              Remove-Item -Path "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip" 
           }
           Compress-Archive -Path "${{ inputs.project-path }}\bin\${{ inputs.platform }}\${{ inputs.plugin-name }}" -DestinationPath "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip"
+            - name: Upload artifacts
+      - id: gradle-build
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: "${{ inputs.plugin-name }}-${{ inputs.platform }}"
+          path: "${{ inputs.plugin-name }}-${{ inputs.platform }}.zip"
+          retention-days: 7
+          if-no-files-found: warn
       - name: Release
         uses: softprops/action-gh-release@v2.2.0
         with:
