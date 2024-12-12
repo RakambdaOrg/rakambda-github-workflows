@@ -39,7 +39,7 @@ permissions:
 
 jobs:
   publish:
-    name: Add artifact to release (${{matrix.platform}})
+    name: Add artifact to release (${{ inputs.platform }})
     runs-on: ["windows-latest", "${{ inputs.runs-on }}"]
     concurrency: zip_${{ inputs.platform }}
     steps:
