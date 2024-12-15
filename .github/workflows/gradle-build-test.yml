@@ -116,7 +116,7 @@ jobs:
           jacocoTestReport
 
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v5.2.0
         if: always()
         with:
           report_paths: 'build/test-results/test/*.xml'
@@ -140,7 +140,7 @@ jobs:
           name: codecov-github-actions
 
       - name: Upload JUnit reports
-        uses: actions/upload-artifact@v5.2.0
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: junit-test-results
