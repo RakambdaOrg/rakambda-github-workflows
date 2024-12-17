@@ -18,16 +18,6 @@ on:
         type: string
         default: "ubuntu-latest"
     secrets:
-      keystore:
-        required: false
-      keystore-passphrase:
-        required: false
-      key-alias:
-        required: true
-      key-store-pass:
-        required: true
-      key-pass:
-        required: true
       curseforge-token:
         required: true
       modrinth-token:
@@ -47,13 +37,6 @@ jobs:
           distribution: ${{ inputs.java-distribution }}
           java-version: ${{ inputs.java-version }}
 
-      - name: Restore keystore
-        run: |
-          if [ ! -z "${{ secrets.keystore }}" ]; then
-            echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
-            gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
-          fi
-
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
@@ -67,11 +50,6 @@ jobs:
           ./gradlew \
           build \
           curseforge \
-          -PforgeKeyStore=keystoreForgeMods.jks \
-          -PforgeKeyStoreAlias=${{ secrets.key-alias }} \
-          -PforgeKeyStorePass=${{ secrets.key-store-pass }} \
-          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }} \
-          -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62 \
           -PcurseforgeApiKey=${{ secrets.curseforge-token }} \
           -PmodrinthToken=${{ secrets.modrinth-token }} \
           -Pversion=${{ steps.get_release.outputs.name }} \

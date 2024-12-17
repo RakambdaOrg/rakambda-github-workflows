@@ -17,17 +17,6 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
-    secrets:
-      keystore:
-        required: false
-      keystore-passphrase:
-        required: false
-      key-alias:
-        required: true
-      key-store-pass:
-        required: true
-      key-pass:
-        required: true
 
 permissions:
   contents: write
@@ -45,24 +34,12 @@ jobs:
           distribution: ${{ inputs.java-distribution }}
           java-version: ${{ inputs.java-version }}
 
-      - name: Restore keystore
-        run: |
-          if [ ! -z "${{ secrets.keystore }}" ]; then
-            echo "${{ secrets.keystore }}" > keystoreForgeMods.jks.asc
-            gpg -d --passphrase "${{ secrets.keystore-passphrase }}" --batch keystoreForgeMods.jks.asc > keystoreForgeMods.jks
-          fi
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4.2.1
       - name: Build
         run: |
           ./gradlew \
-          build \
-          -PforgeKeyStore=keystoreForgeMods.jks \
-          -PforgeKeyStoreAlias=${{ secrets.key-alias }} \
-          -PforgeKeyStorePass=${{ secrets.key-store-pass }} \
-          -PforgeKeyStoreKeyPass=${{ secrets.key-pass }} \
-          -PforgeSignSHA1=f927f4701bf4c0620c7bd0a501ce278f5e5ecc62
+          build
 
       - name: Upload mod file
         uses: actions/upload-artifact@v4.4.3
