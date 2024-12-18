@@ -1,0 +1,62 @@
+name: PowerToysRun Build
+
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+        description: ".NET version to use"
+        required: true
+        type: string
+      plugin-name:
+        description: "Plugin name"
+        required: true
+        type: string
+      platform:
+        description: "Platform to build"
+        required: true
+        type: string
+      release-type:
+        description: "Type of release to make"
+        required: false
+        type: string
+        default: "Release"
+      solution-path:
+        description: "Path to the solution .sln file"
+        required: true
+        type: string
+      project-path:
+        description: "Path to the project folder, containing the .csproj file"
+        required: true
+        type: string
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "windows-latest"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Build (${{ inputs.platform }})
+    runs-on: ["windows-latest", "${{ inputs.runs-on }}"]
+    concurrency: build_${{ inputs.platform }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.1.0
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Build
+        run: dotnet build "${{ inputs.solution-path }}" --configuration "${{ inputs.release-type }}" /p:Platform=${{ inputs.platform }} /p:EnableWindowsTargeting=true
+      - name: Prepare artifact
+        run: |
+          Remove-Item -Path "${{ inputs.project-path }}\bin\*" -Recurse -Include "*.xml", "*.pdb", "PowerToys.*", "Wox.*"
+          Rename-Item -Path "${{ inputs.project-path }}\bin\${{ inputs.platform }}\Release" -NewName "${{ inputs.plugin-name }}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.plugin-name }}-${{ inputs.platform }}
+          path: "${{ inputs.project-path }}\bin\${{ inputs.platform }}\${{ inputs.plugin-name }}"
