@@ -38,7 +38,7 @@ permissions:
   contents: write
 
 jobs:
-  publish:
+  build:
     name: Build (${{ inputs.platform }})
     runs-on: ["windows-latest", "${{ inputs.runs-on }}"]
     concurrency: build_${{ inputs.platform }}
