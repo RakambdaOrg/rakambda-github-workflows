@@ -59,4 +59,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.plugin-name }}-${{ inputs.platform }}
-          path: "${{ inputs.project-path }}\bin\${{ inputs.platform }}\${{ inputs.plugin-name }}"
+          path: "${{ inputs.project-path }}/bin/${{ inputs.platform }}/${{ inputs.plugin-name }}"
