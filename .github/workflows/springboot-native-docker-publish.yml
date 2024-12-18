@@ -70,7 +70,7 @@ jobs:
           fi
       
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4.2.1
+        uses: gradle/actions/setup-gradle@v4.2.2
         with:
           cache-disabled: true
       - name: Boot build native
