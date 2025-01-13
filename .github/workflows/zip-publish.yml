@@ -1,0 +1,53 @@
+name: Zip Publish
+
+on:
+  workflow_call:
+    inputs:
+      filename:
+        description: "Zip name"
+        required: true
+        type: string
+      type:
+        description: "Zip type"
+        required: false
+        type: string
+        default: "zip"
+      path:
+        description: "Path to zip"
+        required: true
+        type: string
+      exclusions:
+        description: "Paths to exclude"
+        required: false
+        type: string
+        default: ""
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Add zip to release
+    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    concurrency: zip
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+      - name: Create zip
+        uses: thedoctor0/zip-release@0.7.6
+        with:
+          type: ${{ inputs.type }}
+          filename: ${{ inputs.filename }}
+          exclusions: ${{ inputs.excludes }}
+      - name: Add file to release
+        uses: softprops/action-gh-release@v2.1.0
+        with:
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          files: |
+            ${{ inputs.filename }}
