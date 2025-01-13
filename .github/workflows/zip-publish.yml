@@ -12,8 +12,13 @@ on:
         required: false
         type: string
         default: "zip"
+      directory:
+        description: "Directory to run the zipping in"
+        required: false
+        type: string
+        default: '.'
       path:
-        description: "Path to zip"
+        description: "Path to zip, relative to directory"
         required: true
         type: string
       exclusions:
@@ -43,6 +48,7 @@ jobs:
         with:
           type: ${{ inputs.type }}
           filename: ${{ inputs.filename }}
+          directory: ${{ inputs.directory }}
           path: ${{ inputs.path }}
           exclusions: ${{ inputs.exclusions }}
       - name: Add file to release
@@ -51,4 +57,4 @@ jobs:
           fail_on_unmatched_files: true
           generate_release_notes: true
           files: |
-            ${{ inputs.filename }}
+            ${{ inputs.directory }}/${{ inputs.filename }}
