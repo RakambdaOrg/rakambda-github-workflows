@@ -1,0 +1,77 @@
+name: Gradle Docker publish
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: "JDK version to use"
+        required: true
+        type: string
+      java-distribution:
+        description: "JDK distribution to use"
+        required: false
+        type: string
+        default: "temurin"
+      docker-image:
+        description: "Name of the docker image to push"
+        required: true
+        type: string
+      docker-tag:
+        description: "Tag of the docker image to push, defaults to current branch name"
+        required: false
+        type: string
+        default: ""
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+    secrets:
+      ktor-extra-params:
+        description: "Extra jib parameters"
+        required: false
+      docker-repo:
+        description: "Docker registry to push to"
+        required: true
+      docker-username:
+        description: "Docker username"
+        required: true
+      docker-token:
+        description: "Docker token"
+        required: true
+
+jobs:
+  publish:
+    name: Gradle - Publish Docker
+    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
+    concurrency: docker-${{ inputs.docker-tag }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+      - name: Set up JDK
+        uses: actions/setup-java@v4.6.0
+        with:
+          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java-version }}
+
+      - name: Calculate image tag
+        id: image-tag
+        run: |
+          if [ -z "${{ inputs.docker-tag }}" ]; then
+            echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ inputs.docker-tag }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4.2.2
+        with:
+          cache-disabled: true
+      - name: Ktor
+        run: |
+          ./gradlew \
+          publishImage ${{ secrets.ktor-extra-params }} \
+          -Dktor.docker.host=${{ secrets.docker-repo }} \
+          -Dktor.docker.username=${{ secrets.docker-username }} \
+          -Dktor.docker.password=${{ secrets.docker-token }} \
+          -Dktor.docker.tag=${{ steps.image-tag.outputs.tag }} \
+          -Dktor.docker.image=${{ inputs.docker-image }}
