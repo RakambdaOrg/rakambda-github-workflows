@@ -74,4 +74,5 @@ jobs:
           -Dktor.docker.username=${{ secrets.docker-username }} \
           -Dktor.docker.password=${{ secrets.docker-token }} \
           -Dktor.docker.tag=${{ steps.image-tag.outputs.tag }} \
-          -Dktor.docker.image=${{ inputs.docker-image }}
+          -Dktor.docker.image=${{ inputs.docker-image }} \
+          -Djib.console=plain
