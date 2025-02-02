@@ -70,9 +70,9 @@ jobs:
         run: |
           ./gradlew \
           publishImage ${{ secrets.ktor-extra-params }} \
-          -Dktor.docker.host=${{ secrets.docker-repo }} \
-          -Dktor.docker.username=${{ secrets.docker-username }} \
-          -Dktor.docker.password=${{ secrets.docker-token }} \
-          -Dktor.docker.tag=${{ steps.image-tag.outputs.tag }} \
-          -Dktor.docker.image=${{ inputs.docker-image }} \
-          -Djib.console=plain
+          -Pktor.docker.host=${{ secrets.docker-repo }} \
+          -Pktor.docker.username=${{ secrets.docker-username }} \
+          -Pktor.docker.password=${{ secrets.docker-token }} \
+          -Pktor.docker.tag=${{ steps.image-tag.outputs.tag }} \
+          -Pktor.docker.image=${{ inputs.docker-image }} \
+          -Pjib.console=plain
