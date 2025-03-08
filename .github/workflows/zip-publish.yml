@@ -38,7 +38,7 @@ permissions:
 jobs:
   publish:
     name: Add zip to release
-    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     concurrency: zip
     steps:
       - name: Checkout source

@@ -21,7 +21,7 @@ on:
 jobs:
   publish:
     name: Gradle - Publish Reporitory
-    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     concurrency: publish
     steps:
       - name: Checkout source

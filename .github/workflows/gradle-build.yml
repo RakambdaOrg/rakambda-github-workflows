@@ -29,7 +29,7 @@ permissions:
 jobs:
   dependency-submission:
     name: Dependencies submission
-    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.2.2
@@ -44,7 +44,7 @@ jobs:
 
   build:
     name: Gradle - Build
-    runs-on: ["ubuntu-latest", "${{ inputs.runs-on }}"]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.2.2

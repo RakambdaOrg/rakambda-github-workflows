@@ -40,7 +40,7 @@ permissions:
 jobs:
   publish:
     name: Add artifact to release (${{ inputs.platform }})
-    runs-on: ["windows-latest", "${{ inputs.runs-on }}"]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     concurrency: zip_${{ inputs.platform }}
     steps:
       - name: Checkout source

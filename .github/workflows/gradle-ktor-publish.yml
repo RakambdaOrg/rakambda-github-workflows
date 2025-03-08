@@ -43,7 +43,7 @@ on:
 jobs:
   publish:
     name: Gradle - Publish Docker
-    runs-on: [ "ubuntu-latest", "${{ inputs.runs-on }}" ]
+    runs-on: [ "${{ inputs.runs-on }}" ]
     concurrency: docker-${{ inputs.docker-tag }}
     steps:
       - name: Checkout source
