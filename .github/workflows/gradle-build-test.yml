@@ -131,7 +131,7 @@ jobs:
           name: codecov-github-actions
       # https://github.com/codecov/test-results-action/issues/72
       - name: Publish tests on CodeCov
-        uses: codecov/test-results-action@v1.0.4
+        uses: codecov/test-results-action@v1.1.0
         if: ${{ !always() }} #${{ inputs.generate-jacoco && inputs.send-codecov }}
         with:
           token: ${{ secrets.codecov-token }}
