@@ -42,6 +42,10 @@ on:
         description: "Environment to use"
         required: false
         type: string
+      environment-url:
+        description: "Environment URL to use"
+        required: false
+        type: string
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -68,6 +72,7 @@ jobs:
     concurrency: docker-${{ inputs.docker-extra-tag }}
     environment:
       name: ${{ inputs.environment }}
+      url: ${{ inputs.environment-url }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
     steps:
