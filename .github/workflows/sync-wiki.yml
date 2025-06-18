@@ -7,6 +7,11 @@ on:
         description: "Path of the wiki in the sources"
         required: true
         type: string
+      only-default-branch:
+        description: "Weather to run only on default branch"
+        required: false
+        type: boolean
+        default: true
       runs-on:
         description: "Runner to use"
         required: false
@@ -23,7 +28,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4.2.2
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Push changes to the wiki
         uses: Andrew-Chen-Wang/github-wiki-action@v4.4.0
+        if: ${{ ! inputs.only-default-branch || (steps.get_release.outputs.target_commitish || github.ref_name) == format('{0}', github.event.repository.default_branch) }}
         with:
           path: ${{ inputs.path }}
