@@ -37,6 +37,6 @@ jobs:
       - name: Update Gradle Wrapper
         uses: gradle-update/update-gradle-wrapper-action@v2.1.0
         with:
-          repo-token: "${{ secrets.reviewers }}"
-          reviewers: "${{ inputs.runs-on }}"
+          repo-token: "${{ secrets.github-token }}"
+          reviewers: "${{ inputs.reviewers }}"
           labels: "${{ inputs.labels }}"
