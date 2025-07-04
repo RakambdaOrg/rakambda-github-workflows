@@ -39,9 +39,6 @@ on:
       docker-token:
         description: "Docker token"
         required: true
-      docker-base-image:
-        description: "Name of the docker base image to use"
-        required: false
 
 jobs:
   publish:
@@ -78,5 +75,4 @@ jobs:
           -Pktor.docker.password=${{ secrets.docker-token }} \
           -Pktor.docker.tag=${{ steps.image-tag.outputs.tag }} \
           -Pktor.docker.image=${{ inputs.docker-image }} \
-          -Pktor.docker.base.image=${{ secrets.docker-base-image }} \
           -Pjib.console=plain
