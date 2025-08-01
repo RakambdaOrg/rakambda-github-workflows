@@ -42,21 +42,6 @@ permissions:
   checks: write
 
 jobs:
-  dependency-submission:
-    name: Dependencies submission
-    runs-on: [ "${{ inputs.runs-on }}" ]
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4.2.2
-      - name: Set up JDK
-        uses: actions/setup-java@v4.7.1
-        with:
-          distribution: ${{ inputs.java-distribution }}
-          java-version: ${{ inputs.java-version }}
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v4.4.1
-        continue-on-error: true
-
   build:
     name: Gradle - Build
     runs-on: [ "${{ inputs.runs-on }}" ]
