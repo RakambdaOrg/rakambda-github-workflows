@@ -25,6 +25,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       dropbox-token:
         description: "Dropbox access token"
@@ -35,6 +39,7 @@ jobs:
     name: Dropbox - Publish
     runs-on: [ "${{ inputs.runs-on }}" ]
     concurrency: dropbox-${{ inputs.target }}
+    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/download-artifact@v5.0.0
         name: Download artifact
