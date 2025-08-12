@@ -32,6 +32,10 @@ on:
         required: false
         type: boolean
         default: false
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       codecov-token:
         description: "Token to upload reports on Codecov"
@@ -45,6 +49,10 @@ jobs:
   build:
     name: Gradle - Build
     runs-on: [ "${{ inputs.runs-on }}" ]
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: gradle-build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0
@@ -76,6 +84,10 @@ jobs:
   tests:
     name: Gradle - Tests
     runs-on: [ "${{ inputs.runs-on }}" ]
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: gradle-test-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

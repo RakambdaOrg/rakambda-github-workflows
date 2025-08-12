@@ -7,6 +7,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       sync-token:
         description: "Token used to approve & merge"
@@ -17,6 +21,10 @@ jobs:
     name: Auto approve synced files
     if: contains(github.event.pull_request.title, 'Synced file(s)') && github.actor == 'couchoud-t' && github.event.pull_request.base.ref == github.event.repository.default_branch
     runs-on: [ "${{ inputs.runs-on }}" ]
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: approve-sync-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Approve Pull Request
         uses: hmarr/auto-approve-action@v4.0.0

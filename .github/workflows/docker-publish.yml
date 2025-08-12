@@ -69,7 +69,9 @@ jobs:
   publish:
     name: Docker - Publish
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: docker-${{ inputs.docker-extra-tag }}
+    concurrency: 
+      group: docker-publish-${{ inputs.docker-extra-tag }}
+      cancel-in-progress: true
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.environment-url }}

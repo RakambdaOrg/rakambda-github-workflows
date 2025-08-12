@@ -30,6 +30,9 @@ jobs:
   build:
     name: Gradle - Build
     runs-on: [ "${{ inputs.runs-on }}" ]
+    concurrency:
+      group: gradle-build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

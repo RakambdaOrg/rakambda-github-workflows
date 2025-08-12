@@ -16,11 +16,19 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
 
 jobs:
   lint:
     name: Nodejs - Lint
     runs-on: [ "${{ inputs.runs-on }}" ]
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: node-lint-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

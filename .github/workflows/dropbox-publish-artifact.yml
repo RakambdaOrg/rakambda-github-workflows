@@ -38,8 +38,10 @@ jobs:
   publish:
     name: Dropbox - Publish
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: dropbox-${{ inputs.target }}
     environment: ${{ inputs.environment }}
+    concurrency: 
+      group: dropbox-${{ github.ref }}-${{ inputs.target }}
+      cancel-in-progress: true
     steps:
       - uses: actions/download-artifact@v5.0.0
         name: Download artifact

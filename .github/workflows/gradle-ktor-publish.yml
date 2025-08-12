@@ -26,6 +26,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       ktor-extra-params:
         description: "Extra jib parameters"
@@ -44,7 +48,10 @@ jobs:
   publish:
     name: Gradle - Publish Docker
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: docker-${{ inputs.docker-tag }}
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: docker-publish-${{ inputs.docker-tag }}
+      cancel-in-progress: true
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

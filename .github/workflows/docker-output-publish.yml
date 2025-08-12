@@ -30,6 +30,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -49,7 +53,10 @@ jobs:
   publish:
     name: Docker - Publish
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: docker-${{ inputs.docker-tag }}
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: docker-publish-${{ inputs.docker-tag }}
+      cancel-in-progress: true
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
     steps:

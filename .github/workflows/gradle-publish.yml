@@ -17,12 +17,19 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
 
 jobs:
   publish:
     name: Gradle - Publish Reporitory
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: publish
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: gradle-publish
+      cancel-in-progress: false
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

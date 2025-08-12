@@ -33,6 +33,10 @@ on:
         required: false
         type: string
         default: "windows-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -41,7 +45,10 @@ jobs:
   publish:
     name: Add artifact to release (${{ inputs.platform }})
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: zip_${{ inputs.platform }}
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: net-package-${{ github.ref }}-${{ inputs.platform }}
+      cancel-in-progress: false
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

@@ -17,6 +17,10 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       curseforge-token:
         required: true
@@ -27,7 +31,10 @@ jobs:
   publish-curseforge:
     name: Gradle - Publish - Curseforge
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: publish-curseforge
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: publish-curseforge
+      cancel-in-progress: false
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0
@@ -60,7 +67,10 @@ jobs:
   publish-modrinth:
     name: Gradle - Publish - Modrinth
     runs-on: ubuntu-latest
-    concurrency: publish-modrinth
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: publish-modrinth
+      cancel-in-progress: false
     steps:
       - name: Checkout source
         uses: actions/checkout@v5.0.0

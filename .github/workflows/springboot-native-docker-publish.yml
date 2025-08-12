@@ -26,6 +26,10 @@ on:
         required: false
         type: number
         default: 60
+      environment:
+        description: "Environment to use"
+        required: false
+        type: string
     secrets:
       docker-repo:
         description: "Docker registry to push to"
@@ -41,7 +45,10 @@ jobs:
   publish:
     name: SpringBoot Native Gradle - Publish Docker
     runs-on: [ "${{ inputs.runs-on }}" ]
-    concurrency: docker-${{ inputs.docker-tag }}
+    environment: ${{ inputs.environment }}
+    concurrency: 
+      group: docker-publish-${{ inputs.docker-tag }}
+      cancel-in-progress: true
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: Checkout source
