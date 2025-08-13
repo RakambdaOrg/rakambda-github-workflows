@@ -73,7 +73,7 @@ jobs:
       - name: Clean extra params
         id: extra-params
         run: |
-          $EXTRA_PARAMS=$(printf "%s" "${{ secrets.jib-extra-params }}")
+          EXTRA_PARAMS=$(printf "%s" "${{ secrets.jib-extra-params }}")
           echo "extra-params=$EXTRA_PARAMS" >> "$GITHUB_OUTPUT"
 
       - name: Setup Gradle
