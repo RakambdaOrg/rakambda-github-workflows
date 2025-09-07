@@ -24,8 +24,6 @@ on:
     secrets:
       curseforge-token:
         required: true
-      modrinth-token:
-        required: true
 
 jobs:
   publish-curseforge:
