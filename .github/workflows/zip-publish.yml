@@ -59,7 +59,7 @@ jobs:
           path: ${{ inputs.path }}
           exclusions: ${{ inputs.exclusions }}
       - name: Add file to release
-        uses: softprops/action-gh-release@v2.3.3
+        uses: softprops/action-gh-release@v2.3.4
         with:
           fail_on_unmatched_files: true
           generate_release_notes: true
