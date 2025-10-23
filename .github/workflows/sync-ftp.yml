@@ -49,3 +49,8 @@ jobs:
       - name: Deploy on FTP
         run: |
           git ftp push -v --remote-root "${{ inputs.remote-path }}" --syncroot "${{ inputs.repository-path }}" --user "${{ secrets.ftp-user }}" --passwd "${{ secrets.ftp-password }}" "${{ secrets.ftp-host }}"
+          if [ $? -eq 5 ]
+          then
+            echo "Failed to get previous manifest, trying to init instead"
+            git ftp init -v --remote-root "${{ inputs.remote-path }}" --syncroot "${{ inputs.repository-path }}" --user "${{ secrets.ftp-user }}" --passwd "${{ secrets.ftp-password }}" "${{ secrets.ftp-host }}"
+          fi
