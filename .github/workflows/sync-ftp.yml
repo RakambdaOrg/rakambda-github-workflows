@@ -48,6 +48,7 @@ jobs:
           sudo chmod 755 /bin/git-ftp
       - name: Deploy on FTP
         run: |
+          set +e
           git ftp push -v --remote-root "${{ inputs.remote-path }}" --syncroot "${{ inputs.repository-path }}" --user "${{ secrets.ftp-user }}" --passwd "${{ secrets.ftp-password }}" "${{ secrets.ftp-host }}"
           if [ $? -eq 5 ]
           then
