@@ -73,7 +73,7 @@ jobs:
 
       - name: Upload artifacts
         id: gradle-build
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v5
         if: "${{ inputs.artifact-name != '' }}"
         with:
           name: ${{ inputs.artifact-name }}
@@ -137,7 +137,7 @@ jobs:
           name: codecov-github-actions
 
       - name: Upload JUnit reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: junit-test-results
@@ -147,7 +147,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
       - name: Upload JaCoCo reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: jacoco-test-results
