@@ -95,7 +95,7 @@ jobs:
           password: ${{ secrets.docker-token }}
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5.9.0
+        uses: docker/metadata-action@v5.10.0
         with:
           images: ${{ secrets.docker-repo }}/${{ inputs.docker-image }}
           tags: |
