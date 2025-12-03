@@ -35,7 +35,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout source
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
       - name: Get release
         id: get_release
         uses: bruceadams/get-release@v1.3.2
