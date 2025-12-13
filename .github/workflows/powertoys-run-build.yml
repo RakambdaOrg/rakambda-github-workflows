@@ -63,7 +63,7 @@ jobs:
           Remove-Item -Path "${{ inputs.project-path }}\bin\*" -Recurse -Include "*.xml", "*.pdb", "PowerToys.*", "Wox.*"
           Rename-Item -Path "${{ inputs.project-path }}\bin\${{ inputs.platform }}\Release" -NewName "${{ inputs.plugin-name }}"
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ inputs.plugin-name }}-${{ inputs.platform }}
           path: "${{ inputs.project-path }}/bin/${{ inputs.platform }}/${{ inputs.plugin-name }}"
