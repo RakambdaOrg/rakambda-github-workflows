@@ -27,7 +27,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout source
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
       - run: cd "${{ inputs.source-folder }}"
       - name: Python Syntax Checker
         uses: cclauss/Find-Python-syntax-errors-action@v0.2.0
