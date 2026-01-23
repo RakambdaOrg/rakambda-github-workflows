@@ -38,7 +38,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
       - name: Update Gradle Wrapper
         uses: gradle-update/update-gradle-wrapper-action@v2.1.0
         with:

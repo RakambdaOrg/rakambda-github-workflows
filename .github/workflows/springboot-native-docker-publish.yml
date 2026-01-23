@@ -52,7 +52,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: Checkout source
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
       - name: Login on registry
         uses: docker/login-action@v3.6.0
         with:
