@@ -7,7 +7,7 @@ on:
         description: "Runner to use"
         required: false
         type: string
-        default: "ubuntu-slim"
+        default: "ubuntu-latest"
       reviewers:
         description: "Reviewers to add on created PRs"
         required: false
