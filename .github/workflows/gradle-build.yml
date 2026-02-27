@@ -17,6 +17,11 @@ on:
         required: false
         type: string
         default: ""
+      artifact-archive:
+        description: "Whether to compress the artifact"
+        required: false
+        type: boolean
+        default: false
       runs-on:
         description: "Runner to use"
         required: false
@@ -52,10 +57,11 @@ jobs:
 
       - name: Upload artifacts
         id: gradle-build
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7.0.0
         if: "${{ inputs.artifact-name != '' }}"
         with:
           name: ${{ inputs.artifact-name }}
           path: build/libs/*.jar
           retention-days: 7
           if-no-files-found: warn
+          archive: ${{ inputs.artifact-archive }}

@@ -21,6 +21,11 @@ on:
         description: "Environment to use"
         required: false
         type: string
+      artifact-archive:
+        description: "Whether to compress the artifact"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,10 +55,11 @@ jobs:
           build
 
       - name: Upload mod file
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: mod-file
           path: |
             build/libs/*.jar
           if-no-files-found: error
           retention-days: 7
+          archive: ${{ inputs.artifact-archive }}

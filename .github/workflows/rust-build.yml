@@ -56,7 +56,7 @@ jobs:
           EXTRA_FILES: "${{ inputs.extra-files }}"
           UPLOAD_MODE: "${{ inputs.upload-mode }}"
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: "${{ inputs.target }}"
           path: |
