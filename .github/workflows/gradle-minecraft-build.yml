@@ -26,6 +26,11 @@ on:
         required: false
         type: boolean
         default: false
+      artifact-path:
+        description: "Path of the artifacts to get"
+        required: false
+        type: string
+        default: "build/libs/*.jar"
 
 permissions:
   contents: write
@@ -58,8 +63,7 @@ jobs:
         uses: actions/upload-artifact@v7.0.0
         with:
           name: mod-file
-          path: |
-            build/libs/*.jar
+          path: ${{ inputs.artifact-path }}
           if-no-files-found: error
           retention-days: 7
           archive: ${{ inputs.artifact-archive }}

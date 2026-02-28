@@ -22,6 +22,11 @@ on:
         required: false
         type: boolean
         default: false
+      artifact-path:
+        description: "Path of the artifacts to get"
+        required: false
+        type: string
+        default: "build/libs/*.jar"
       runs-on:
         description: "Runner to use"
         required: false
@@ -82,7 +87,7 @@ jobs:
         if: "${{ inputs.artifact-name != '' }}"
         with:
           name: ${{ inputs.artifact-name }}
-          path: build/libs/*.jar
+          path: ${{ inputs.artifact-path }}
           retention-days: 7
           if-no-files-found: warn
           archive: ${{ inputs.artifact-archive }}
