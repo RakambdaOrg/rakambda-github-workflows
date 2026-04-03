@@ -56,6 +56,9 @@ on:
       docker-token:
         description: "Docker token"
         required: true
+      ssh-private-key:
+        required: false
+        description: "SSH private key to pull git repositories"
     outputs:
       image-digest:
         description: "Pushed docker image's digest"
@@ -78,6 +81,10 @@ jobs:
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
     steps:
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.ssh-private-key }}
       - name: Checkout source
         uses: actions/checkout@v6.0.2
         with:
