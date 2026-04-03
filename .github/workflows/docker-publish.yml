@@ -129,5 +129,6 @@ jobs:
             ${{ inputs.build-args }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          ssh: default=${{ env.SSH_AUTH_SOCK }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
