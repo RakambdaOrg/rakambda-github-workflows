@@ -75,6 +75,8 @@ jobs:
     concurrency: 
       group: docker-publish-${{ inputs.docker-extra-tag }}
       cancel-in-progress: true
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.environment-url }}
@@ -83,6 +85,7 @@ jobs:
     steps:
       - name: Setup SSH key
         uses: webfactory/ssh-agent@v0.9.1
+        if: ${{ env.SSH_PRIVATE_KEY != '' }}
         with:
           ssh-private-key: ${{ secrets.ssh-private-key }}
       - name: Checkout source
