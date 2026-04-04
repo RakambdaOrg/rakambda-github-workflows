@@ -37,7 +37,7 @@ jobs:
       SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
     steps:
       - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.10.0
         if: ${{ env.SSH_PRIVATE_KEY != '' }}
         with:
           ssh-private-key: ${{ secrets.ssh-private-key }}
