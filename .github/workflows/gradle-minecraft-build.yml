@@ -62,7 +62,7 @@ jobs:
           build
 
       - name: Upload mod file
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: mod-file
           path: ${{ inputs.artifact-path }}
