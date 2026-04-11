@@ -120,7 +120,7 @@ jobs:
             ${{ inputs.docker-extra-tag != '' && format('type=raw,value={0},enable=true', inputs.docker-extra-tag) || ''  }}
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v7.0.0
+        uses: docker/build-push-action@v7.1.0
         with:
           context: .
           push: true
