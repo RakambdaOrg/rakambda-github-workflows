@@ -20,10 +20,6 @@ on:
         description: "Environment to use"
         required: false
         type: string
-    secrets:
-      ssh-private-key:
-        required: false
-        description: "SSH private key to pull git repositories"
 
 jobs:
   lint:
@@ -33,14 +29,7 @@ jobs:
     concurrency:
       group: node-lint-${{ github.ref }}
       cancel-in-progress: true
-    env:
-      SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
     steps:
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.10.0
-        if: ${{ env.SSH_PRIVATE_KEY != '' }}
-        with:
-          ssh-private-key: ${{ secrets.ssh-private-key }}
       - name: Checkout source
         uses: actions/checkout@v6.0.2
       - name: Setup PNPM

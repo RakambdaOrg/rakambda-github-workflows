@@ -56,9 +56,6 @@ on:
       docker-token:
         description: "Docker token"
         required: true
-      ssh-private-key:
-        required: false
-        description: "SSH private key to pull git repositories"
     outputs:
       image-digest:
         description: "Pushed docker image's digest"
@@ -75,19 +72,12 @@ jobs:
     concurrency: 
       group: docker-publish-${{ inputs.docker-extra-tag }}
       cancel-in-progress: true
-    env:
-      SSH_PRIVATE_KEY: ${{ secrets.ssh-private-key }}
     environment:
       name: ${{ inputs.environment }}
       url: ${{ inputs.environment-url }}
     outputs:
       digest: ${{ steps.docker_build.outputs.digest }}
     steps:
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.10.0
-        if: ${{ env.SSH_PRIVATE_KEY != '' }}
-        with:
-          ssh-private-key: ${{ secrets.ssh-private-key }}
       - name: Checkout source
         uses: actions/checkout@v6.0.2
         with:
@@ -132,6 +122,5 @@ jobs:
             ${{ inputs.build-args }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          ssh: default=${{ env.SSH_AUTH_SOCK }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
