@@ -54,7 +54,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v7.0.0
       - name: Login on registry
-        uses: docker/login-action@v4.3.0
+        uses: docker/login-action@v4.4.0
         with:
           registry: ${{ secrets.docker-repo }}
           username: ${{ secrets.docker-username }}
