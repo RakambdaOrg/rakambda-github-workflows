@@ -31,6 +31,21 @@ on:
         required: false
         type: string
         default: "build/libs/*.jar"
+      game-tests:
+        description: "Whether to run the game tests (in a separate job)"
+        required: false
+        type: boolean
+        default: false
+      game-tests-task:
+        description: "Gradle task running the game tests"
+        required: false
+        type: string
+        default: "gameTest"
+      game-tests-report-path:
+        description: "Path of the game test reports and logs to upload"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -69,3 +84,41 @@ jobs:
           if-no-files-found: error
           retention-days: 7
           archive: ${{ inputs.artifact-archive }}
+
+  game-tests:
+    name: Gradle - Game tests
+    if: ${{ inputs.game-tests }}
+    runs-on: [ "${{ inputs.runs-on }}" ]
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: gradle-game-tests-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7.0.1
+      - name: Set up JDK
+        uses: actions/setup-java@v6.0.1
+        with:
+          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java-version }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6.4.0
+        with:
+          cache-provider: basic
+      - name: Run game tests
+        env:
+          GAME_TESTS_TASK: ${{ inputs.game-tests-task }}
+        run: |
+          ./gradlew \
+          --continue \
+          "$GAME_TESTS_TASK"
+
+      - name: Upload game test reports
+        uses: actions/upload-artifact@v7.0.1
+        if: ${{ !cancelled() && inputs.game-tests-report-path != '' }}
+        with:
+          name: game-test-reports
+          path: ${{ inputs.game-tests-report-path }}
+          if-no-files-found: warn
+          retention-days: 7
