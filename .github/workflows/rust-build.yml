@@ -46,17 +46,17 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout source
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Compile
         id: compile
-        uses: rust-build/rust-build.action@v1.4.5
+        uses: rust-build/rust-build.action@6febf1b0ed6499a46610b58ef9d810398e75f3c2 # v1.4.5
         with:
           TOOLCHAIN_VERSION: stable
           RUSTTARGET: "${{ inputs.target }}"
           EXTRA_FILES: "${{ inputs.extra-files }}"
           UPLOAD_MODE: "${{ inputs.upload-mode }}"
       - name: Upload artifact
-        uses: actions/upload-artifact@v7.0.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: "${{ inputs.target }}"
           path: |
