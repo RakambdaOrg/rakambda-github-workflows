@@ -49,9 +49,9 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Checkout source
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Create zip
-        uses: thedoctor0/zip-release@0.7.6
+        uses: thedoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554 # 0.7.6
         with:
           type: ${{ inputs.type }}
           filename: ${{ inputs.filename }}
@@ -59,7 +59,7 @@ jobs:
           path: ${{ inputs.path }}
           exclusions: ${{ inputs.exclusions }}
       - name: Add file to release
-        uses: softprops/action-gh-release@v3.0.3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           fail_on_unmatched_files: true
           generate_release_notes: true

@@ -27,11 +27,11 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: Approve Pull Request
-        uses: hmarr/auto-approve-action@v4.0.0
+        uses: hmarr/auto-approve-action@f0939ea97e9205ef24d872e76833fa908a770363 # v4.0.0
         with:
           github-token: "${{ secrets.sync-token }}"
       - name: Merge Pull Request
-        uses: pascalgn/automerge-action@v0.16.4
+        uses: pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67 # v0.16.4
         env:
           GITHUB_TOKEN: "${{ secrets.sync-token }}"
           PULL_REQUEST: "${{ github.event.number }}"

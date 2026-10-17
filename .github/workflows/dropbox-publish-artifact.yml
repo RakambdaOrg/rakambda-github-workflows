@@ -43,12 +43,12 @@ jobs:
       group: dropbox-${{ github.ref }}-${{ inputs.target }}
       cancel-in-progress: true
     steps:
-      - uses: actions/download-artifact@v8.0.2
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         name: Download artifact
         with:
           name: ${{ inputs.artifact-name }}
       - name: Deploy on Dropbox
-        uses: deka0106/upload-to-dropbox@v2.0.1
+        uses: deka0106/upload-to-dropbox@0e5a2c63d797e18f9abd8f07fef7d1d001c915af # v2.0.1
         with:
           dropbox_access_token: ${{ secrets.dropbox-token }}
           src: ${{ inputs.source }}
