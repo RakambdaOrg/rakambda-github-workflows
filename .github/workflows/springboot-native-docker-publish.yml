@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.docker-username }}
           password: ${{ secrets.docker-token }}
       - name: Set up JDK
-        uses: graalvm/setup-graalvm@f70bc8032f90a104502824a54bcb94b6f01715bc # v1.6.8
+        uses: graalvm/setup-graalvm@d6eca2595046623d69d636041513c80abf745406 # v1.6.9
         with:
           version: 'latest'
           java-version: ${{ inputs.java-version }}
