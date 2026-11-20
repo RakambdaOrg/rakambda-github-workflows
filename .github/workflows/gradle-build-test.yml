@@ -11,7 +11,7 @@ on:
         description: "JDK distribution to use"
         required: false
         type: string
-        default: "temurin"
+        default: "zulu"
       artifact-name:
         description: "Name of artifact to get"
         required: false
