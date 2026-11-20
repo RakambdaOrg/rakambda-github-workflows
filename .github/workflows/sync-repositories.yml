@@ -1,0 +1,77 @@
+name: Sync repositories
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        description: "Path of the sync configuration"
+        required: false
+        type: string
+        default: ".github/sync.yml"
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+    secrets:
+      app-id:
+        required: true
+      app-installation-id:
+        required: true
+      app-private-key:
+        required: true
+      docker-username-dockerio:
+        required: false
+      docker-token-dockerio:
+        required: false
+      docker-repo-dockerio:
+        required: false
+      docker-username-perso:
+        required: false
+      docker-token-perso:
+        required: false
+      docker-repo-perso:
+        required: false
+      dropbox-token-perso:
+        required: false
+      curseforge-api-key:
+        required: false
+      modrinth-token:
+        required: false
+      ftp-host-perso:
+        required: false
+      ftp-password-perso:
+        required: false
+      ftp-user-perso:
+        required: false
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: [ "${{ inputs.runs-on }}" ]
+    concurrency:
+      group: sync
+      cancel-in-progress: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Sync
+        uses: RakambdaOrg/github-action-repo-settings-sync@main
+        env:
+          DOCKER_USERNAME_DOCKERIO: ${{ secrets.docker-username-dockerio }}
+          DOCKER_TOKEN_DOCKERIO: ${{ secrets.docker-token-dockerio }}
+          DOCKER_REPO_DOCKERIO: ${{ secrets.docker-repo-dockerio }}
+          DOCKER_USERNAME_PERSO: ${{ secrets.docker-username-perso }}
+          DOCKER_TOKEN_PERSO: ${{ secrets.docker-token-perso }}
+          DOCKER_REPO_PERSO: ${{ secrets.docker-repo-perso }}
+          DROPBOX_TOKEN_PERSO: ${{ secrets.dropbox-token-perso }}
+          CURSEFORGE_API_KEY: ${{ secrets.curseforge-api-key }}
+          MODRINTH_TOKEN: ${{ secrets.modrinth-token }}
+          FTP_HOST_PERSO: ${{ secrets.ftp-host-perso }}
+          FTP_PASSWORD_PERSO: ${{ secrets.ftp-password-perso }}
+          FTP_USER_PERSO: ${{ secrets.ftp-user-perso }}
+        with:
+          github_app_id: ${{ secrets.app-id }}
+          github_app_installation_id: ${{ secrets.app-installation-id }}
+          github_app_private_key: "${{ secrets.app-private-key }}"
+          config_path: ${{ inputs.config-path }}
