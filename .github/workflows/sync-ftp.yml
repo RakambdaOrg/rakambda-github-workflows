@@ -43,9 +43,10 @@ jobs:
           fetch-depth: 20
       - name: Set up Git-FTP
         run: |
-          curl https://raw.githubusercontent.com/git-ftp/git-ftp/master/git-ftp > git-ftp &&
-          sudo mv git-ftp /bin &&
-          sudo chmod 755 /bin/git-ftp
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL https://raw.githubusercontent.com/git-ftp/git-ftp/master/git-ftp -o "$HOME/.local/bin/git-ftp"
+          chmod 755 "$HOME/.local/bin/git-ftp"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Deploy on FTP
         run: |
           set +e
