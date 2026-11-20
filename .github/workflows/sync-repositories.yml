@@ -1,0 +1,41 @@
+name: Sync repositories
+
+# Call with `secrets: inherit`: every caller secret is exported as an env var of the same name,
+# so the caller owns the list. SYNC_APP_ID, SYNC_APP_INSTALLATION_ID and SYNC_APP_PRIVATE_KEY are required.
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        description: "Path of the sync configuration"
+        required: false
+        type: string
+        default: ".github/sync.yml"
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: [ "${{ inputs.runs-on }}" ]
+    concurrency:
+      group: sync
+      cancel-in-progress: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Export secrets as env
+        env:
+          SECRETS: ${{ toJSON(secrets) }}
+        run: |
+          delim="EOF_$(openssl rand -hex 16)"
+          jq -r --arg d "$delim" 'to_entries[] | select(.key != "github_token" and (.key | test("^[A-Za-z_][A-Za-z0-9_]*$"))) | "\(.key)<<\($d)\n\(.value)\n\($d)"' <<<"$SECRETS" >> "$GITHUB_ENV"
+      - name: Sync
+        uses: RakambdaOrg/github-action-repo-settings-sync@main
+        with:
+          github_app_id: ${{ env.SYNC_APP_ID }}
+          github_app_installation_id: ${{ env.SYNC_APP_INSTALLATION_ID }}
+          github_app_private_key: ${{ env.SYNC_APP_PRIVATE_KEY }}
+          config_path: ${{ inputs.config-path }}
