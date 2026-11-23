@@ -52,7 +52,7 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: read
   checks: write
 
 jobs:
