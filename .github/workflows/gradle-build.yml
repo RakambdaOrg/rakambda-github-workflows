@@ -34,7 +34,7 @@ on:
         default: "ubuntu-latest"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
