@@ -16,6 +16,8 @@ on:
         description: "Token used to approve & merge"
         required: true
 
+permissions: {}
+
 jobs:
   auto-approve-synced-files:
     name: Auto approve synced files

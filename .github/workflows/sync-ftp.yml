@@ -28,6 +28,9 @@ on:
       ftp-password:
         required: false
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: FTP - Sync
