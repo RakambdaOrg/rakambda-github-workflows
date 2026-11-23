@@ -49,6 +49,9 @@ on:
         description: "Pushed docker image's digest"
         value: ${{ jobs.publish.outputs.digest }}
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     name: Docker - Publish

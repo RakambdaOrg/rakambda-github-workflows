@@ -25,6 +25,9 @@ on:
       modrinth-token:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   publish-modrinth:
     name: Gradle - Publish - Modrinth

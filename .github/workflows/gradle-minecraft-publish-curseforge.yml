@@ -25,6 +25,9 @@ on:
       curseforge-token:
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   publish-curseforge:
     name: Gradle - Publish - Curseforge
