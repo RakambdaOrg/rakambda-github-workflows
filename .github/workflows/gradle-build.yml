@@ -32,6 +32,26 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      extra-artifact-name:
+        description: "Name of a second artifact to upload"
+        required: false
+        type: string
+        default: ""
+      extra-artifact-path:
+        description: "Path of the second artifact"
+        required: false
+        type: string
+        default: ""
+      gradle-tasks:
+        description: "Gradle tasks to run"
+        required: false
+        type: string
+        default: "build"
+      pre-script:
+        description: "Shell commands run before Gradle (trusted caller input)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -57,10 +77,16 @@ jobs:
         with:
           cache-provider: basic
 
+      - name: Pre-build script
+        if: ${{ inputs.pre-script != '' }}
+        env:
+          PRE_SCRIPT: ${{ inputs.pre-script }}
+        run: bash -e -c "$PRE_SCRIPT"
+
       - name: Build project
-        run: |
-          ./gradlew \
-          build
+        env:
+          GRADLE_TASKS: ${{ inputs.gradle-tasks }}
+        run: ./gradlew $GRADLE_TASKS
 
       - name: Upload artifacts
         id: gradle-build
@@ -69,6 +95,16 @@ jobs:
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
+          retention-days: 7
+          if-no-files-found: warn
+          archive: ${{ inputs.artifact-archive }}
+
+      - name: Upload extra artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: "${{ inputs.extra-artifact-name != '' }}"
+        with:
+          name: ${{ inputs.extra-artifact-name }}
+          path: ${{ inputs.extra-artifact-path }}
           retention-days: 7
           if-no-files-found: warn
           archive: ${{ inputs.artifact-archive }}

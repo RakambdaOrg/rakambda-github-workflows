@@ -26,6 +26,11 @@ on:
         required: false
         type: boolean
         default: false
+      gradle-project:
+        description: "Gradle project path holding the jib task, e.g. :miner (root project when empty)"
+        required: false
+        type: string
+        default: ""
       runs-on:
         description: "Runner to use"
         required: false
@@ -40,8 +45,8 @@ on:
         description: "Extra jib parameters"
         required: false
       docker-repo:
-        description: "Docker registry to push to"
-        required: true
+        description: "Docker registry to push to (empty: Docker Hub)"
+        required: false
       docker-username:
         description: "Docker username"
         required: true
@@ -58,7 +63,7 @@ jobs:
     runs-on: [ "${{ inputs.runs-on }}" ]
     environment: ${{ inputs.environment }}
     concurrency: 
-      group: docker-publish-${{ inputs.docker-tag }}
+      group: docker-publish-${{ inputs.gradle-project }}-${{ inputs.docker-image }}-${{ inputs.docker-tag }}
       cancel-in-progress: true
     steps:
       - name: Checkout source
@@ -79,7 +84,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.docker-repo }}/${{ inputs.docker-image }}:base
+          tags: ${{ secrets.docker-repo && format('{0}/', secrets.docker-repo) || '' }}${{ inputs.docker-image }}:base
           platforms: linux/amd64
           build-args: JAVA_VERSION=${{ inputs.java-version }}
           cache-from: type=gha
@@ -113,9 +118,9 @@ jobs:
       - name: Jib
         run: |
           ./gradlew \
-          jib ${{ steps.extra-params.outputs.extra-params }} \
-          ${{ inputs.build-base-image && format('-Djib.from.image={0}/{1}:base -Djib.from.auth.username={2} -Djib.from.auth.password={3}', secrets.docker-repo, inputs.docker-image, secrets.docker-username, secrets.docker-token) || '' }} \
+          ${{ inputs.gradle-project }}:jib ${{ steps.extra-params.outputs.extra-params }} \
+          ${{ inputs.build-base-image && format('-Djib.from.image={0}{1}:base -Djib.from.auth.username={2} -Djib.from.auth.password={3}', secrets.docker-repo && format('{0}/', secrets.docker-repo) || '', inputs.docker-image, secrets.docker-username, secrets.docker-token) || '' }} \
           -Djib.to.auth.username=${{ secrets.docker-username }} \
           -Djib.to.auth.password=${{ secrets.docker-token }} \
-          -Djib.to.image=${{ secrets.docker-repo }}/${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }} \
+          -Djib.to.image=${{ secrets.docker-repo && format('{0}/', secrets.docker-repo) || '' }}${{ inputs.docker-image }}:${{ steps.image-tag.outputs.tag }} \
           -Djib.console=plain
