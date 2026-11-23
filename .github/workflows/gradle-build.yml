@@ -32,6 +32,16 @@ on:
         required: false
         type: string
         default: "ubuntu-latest"
+      gradle-tasks:
+        description: "Gradle tasks to run"
+        required: false
+        type: string
+        default: "build"
+      pre-script:
+        description: "Shell commands run before Gradle (trusted caller input)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -57,10 +67,16 @@ jobs:
         with:
           cache-provider: basic
 
+      - name: Pre-build script
+        if: ${{ inputs.pre-script != '' }}
+        env:
+          PRE_SCRIPT: ${{ inputs.pre-script }}
+        run: bash -e -c "$PRE_SCRIPT"
+
       - name: Build project
-        run: |
-          ./gradlew \
-          build
+        env:
+          GRADLE_TASKS: ${{ inputs.gradle-tasks }}
+        run: ./gradlew $GRADLE_TASKS
 
       - name: Upload artifacts
         id: gradle-build

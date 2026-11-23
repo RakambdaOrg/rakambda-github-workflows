@@ -1,0 +1,58 @@
+name: Gradle GitHub release
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: "JDK version to use"
+        required: true
+        type: string
+      java-distribution:
+        description: "JDK distribution to use"
+        required: false
+        type: string
+        default: "zulu"
+      gradle-tasks:
+        description: "Gradle tasks producing the files to release"
+        required: false
+        type: string
+        default: "assemble"
+      files:
+        description: "Files to attach to the release (one glob per line)"
+        required: true
+        type: string
+      runs-on:
+        description: "Runner to use"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Gradle - GitHub release
+    runs-on: [ "${{ inputs.runs-on }}" ]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up JDK
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java-version }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-provider: basic
+      - name: Build project
+        env:
+          GRADLE_TASKS: ${{ inputs.gradle-tasks }}
+        run: ./gradlew $GRADLE_TASKS
+      - name: Release
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
+        with:
+          fail_on_unmatched_files: false
+          generate_release_notes: true
+          files: ${{ inputs.files }}
